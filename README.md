@@ -1,26 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="280" alt="Laravel Logo">
+</p>
 
-## MBS Booking - Sistem Booking Berbasis SAW
+# MBS Booking – Sistem Booking Ruangan Berbasis SAW
 
-Aplikasi ini merupakan sistem booking ruang/layanan dengan fitur utama penentuan prioritas otomatis berbasis **algoritma SAW (Simple Additive Weighting)**.
+> **MBS Booking** adalah aplikasi modern untuk pemesanan ruangan/lokasi secara online yang mengadopsi algoritma **SAW (Simple Additive Weighting)** untuk menentukan prioritas booking secara otomatis, objektif, dan transparan.
 
-### 🔎 Penggunaan Algoritma SAW
-SAW digunakan dalam aplikasi ini untuk membantu pengambilan keputusan dengan cara melakukan penilaian dan pemeringkatan alternatif booking berdasarkan beberapa kriteria (misal: jadwal, kebutuhan ruang, kepentingan, dsb). Algoritma ini memastikan proses pemilihan dilakukan secara objektif dan transparan, sehingga prioritas booking lebih adil dan terukur.
+---
 
-#### Cara Kerja Singkat SAW:
-1. Menentukan kriteria dan bobot pada setiap kriteria.
-2. Menilai setiap alternatif booking pada tiap kriteria.
-3. Menghitung skor akhir tiap alternatif berdasarkan penjumlahan nilai yang sudah dinormalisasi dan dikalikan bobot.
-4. Alternatif dengan skor tertinggi akan mendapat prioritas utama.
+## 🎯 Deskripsi Singkat
+Aplikasi ini memudahkan pengguna dalam melakukan booking ruang dan jadwal secara online, memanfaatkan teknologi prioritas otomatis dengan fitur pelaporan, manajemen data lengkap, dan antarmuka user-friendly untuk admin maupun user biasa.
 
-### 🚀 Fitur Unggulan
-- **Penjadwalan & Booking Otomatis**
-- **Penilaian Prioritas Otomatis (SAW)**
-- Integrasi Notifikasi Booking
-- Manajemen Data Ruang dan Jadwal
-- Laporan & Riwayat Booking Lengkap
-- Autentikasi Multiuser
-- Dashboard Admin & Statistik
+---
+
+## 🚀 Fitur Unggulan
+| Fitur                         | Deskripsi |
+|-------------------------------|-----------|
+| 🕑 Penjadwalan & Booking      | Booking cepat, realtime, dan mudah dipantau |
+| ⚖️ Prioritas Otomatis (SAW)    | Penentuan booking utama otomatis berdasarkan algoritma SAW |
+| 🔔 Notifikasi                  | Reminder otomatis untuk status booking |
+| 📊 Dashboard & Statistik      | Dashboard admin user, statistik pemakaian, laporan riwayat lengkap |
+| 👥 Multiuser & Admin          | Hak akses berbeda untuk user/admin/pengelola |
+| 🏢 Manajemen Data Ruang/Jadwal | CRUD master data ruangan, jadwal, pengguna |
+
+---
+
+## 💡 Cara Instalasi
+
+```bash
+# 1. Clone repository
+git clone <repo-url>
+cd mbs-booking
+
+# 2. Install dependency
+composer install
+npm install
+
+# 3. Copy .env & generate key
+cp .env.example .env
+php artisan key:generate
+
+# 4. Edit .env untuk konfigurasi database
+# 5. Jalankan migrasi & seeder
+php artisan migrate --seed
+
+# 6. Jalankan server
+php artisan serve
+```
+
+---
+
+## 📝 Panduan Penggunaan
+
+### 1. Login User/Admin
+- Masuk dengan akun terdaftar melalui halaman login.
+- Admin mengelola ruang, jadwal, verifikasi booking. User melakukan booking & pantau status.
+
+### 2. Booking Ruangan
+- Pilih menu Booking → Tentukan ruang, tanggal, waktu → Klik Submit.
+- Sistem otomatis menilai dan memproses prioritas booking dengan **algoritma SAW**.
+
+### 3. Pemeringkatan SAW
+- Sistem akan memeringkat berdasarkan bobot kriteria (misal: urgensi, kapasitas, waktu, dsb).
+- Booking dengan skor tertinggi otomatis menjadi prioritas utama.
+- Proses ini transparan dan adil.
+
+### 4. Monitoring & Notifikasi
+- Lihat status booking & riwayat pada dashboard.
+- Sistem memberi notifikasi (email/pop-up) jika booking berhasil, gagal, atau dibatalkan.
+
+---
+
+## 📐 UML Diagram
+
+### Use Case Diagram
+![UML Use Case Example](docs/uml-usecase.png)
+<sub>*Ganti gambar ini dengan diagram sesuai aplikasi Anda—bisa dibuat di draw.io atau StarUML, lalu upload ke folder docs/ dengan nama yang sama*</sub>
+
+**Narasi singkat:**
+- User dapat login, booking ruang & memantau hasil prioritas.
+- Admin dapat mengelola data, memvalidasi booking, laporan statistik.
+
+### Activity Diagram (Opsional)
+![UML Activity Example](docs/uml-activity.png)
+<sub>*Ganti gambar ini dengan diagram aktivitas proses booking dan SAW jika diperlukan*</sub>
+
+---
+
+## ❓ FAQ
+
+> **Q: Bagaimana algoritma SAW menentukan prioritas booking?**
+>
+> **A:** Sistem akan menilai setiap permintaan booking berdasar berbagai kriteria yang sudah diberi bobot, melakukan normalisasi nilai, lalu hasil akhirnya adalah booking dengan skor tertinggi mendapatkan prioritas booking.
+>
+> **Q: Siapa saja yang bisa melakukan booking?**
+>
+> **A:** Semua user terdaftar dapat melakukan booking, dengan hak akses dan approval sesuai kebijakan admin.
 
 ---
 
