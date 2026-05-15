@@ -74,6 +74,12 @@ class PeminjamanController extends Controller
 
             $peminjaman->refresh();
 
+            if ($peminjaman->status === Peminjaman::STATUS_CANCELED) {
+                return redirect()
+                    ->route('guru.peminjamans.show', $peminjaman)
+                    ->with('error', 'Peminjaman otomatis dibatalkan karena jadwal bentrok dengan agenda Kepala Sekolah/Admin (Hak Veto).');
+            }
+
             return redirect()
                 ->route('guru.peminjamans.show', $peminjaman)
                 ->with('info', "Terdeteksi konflik jadwal. SAW telah menentukan prioritas. Skor Anda: {$peminjaman->saw_final_score}");

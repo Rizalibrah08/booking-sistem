@@ -110,8 +110,8 @@ class SawCalculatorService
     protected function findVetoRequest(Collection $conflicts): ?Peminjaman
     {
         return $conflicts->first(function (Peminjaman $p) {
-            // Direct Kepsek request (not a student borrower)
-            return ! $p->is_student_borrower && $p->user->isKepsek();
+            // Direct Kepsek/Admin request (not a student borrower)
+            return ! $p->is_student_borrower && ($p->user->isKepsek() || $p->user->isAdmin());
         });
     }
 
@@ -137,7 +137,7 @@ class SawCalculatorService
                 ->each(function (Peminjaman $p) {
                     $p->update([
                         'status'        => Peminjaman::STATUS_CANCELED,
-                        'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Kepsek (Kepala Sekolah).',
+                        'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Admin / Kepala Sekolah.',
                     ]);
                 });
 

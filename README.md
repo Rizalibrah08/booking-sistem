@@ -65,7 +65,7 @@ Ketika dua atau lebih pengguna meminjam fasilitas yang sama pada waktu yang bert
 | Fitur | Deskripsi |
 |-------|-----------|
 | **Algoritma SAW** | Menentukan prioritas peminjaman secara objektif menggunakan 3 kriteria terbobot |
-| **Hak Veto Kepsek** | Kepala Sekolah otomatis disetujui & membatalkan konflik yang ada |
+| **Hak Veto Kepsek & Admin** | Kepsek/Admin otomatis disetujui & membatalkan konflik yang ada |
 | **Peminjaman Siswa** | Admin dapat mengajukan atas nama siswa dengan Guru Penanggung Jawab |
 | **Multi-Role** | 4 role: Admin, Kepsek, Guru, Staf — masing-masing dengan dashboard terpisah |
 | **Deteksi Konflik** | Otomatis mendeteksi jadwal bertumpuk dan menjalankan SAW |
@@ -78,7 +78,7 @@ Ketika dua atau lebih pengguna meminjam fasilitas yang sama pada waktu yang bert
 
 | Role | Dashboard | Akses | Jabatan Score (C1) |
 |------|-----------|-------|--------------------|
-| **Admin** | `/admin/dashboard` | Full CRUD aset + semua peminjaman + input siswa | 0 (tidak ikut SAW) |
+| **Admin** | `/admin/dashboard` | Full CRUD aset + semua peminjaman + input siswa + **Hak Veto** | 0 (tidak ikut SAW) |
 | **Kepsek** | `/admin/dashboard` | Sama seperti admin + **Hak Veto** otomatis | 4 |
 | **Guru** | `/dashboard` | Ajukan peminjaman + lihat riwayat sendiri | 3 |
 | **Staf** | `/dashboard` | Ajukan peminjaman + lihat riwayat sendiri | 2 |
@@ -203,7 +203,7 @@ flowchart TD
 
     F --> G[Validasi Input]
     G -->|Gagal| F
-    G -->|Berhasil| H{User = Kepsek?}
+    G -->|Berhasil| H{User = Kepsek/Admin?}
 
     H -->|Ya| I[Auto Approve + Hak Veto]
     I --> J[Force Cancel Konflik Lain]
@@ -503,7 +503,7 @@ php artisan serve
 
 > **Q: Apa itu Hak Veto?**
 >
-> **A:** Jika Kepala Sekolah mengajukan peminjaman (bukan atas nama siswa), permintaan langsung disetujui dan semua konflik otomatis dibatalkan tanpa melalui SAW.
+> **A:** Jika Kepala Sekolah atau Admin mengajukan peminjaman (bukan atas nama siswa), permintaan langsung disetujui dan semua konflik otomatis dibatalkan tanpa melalui SAW.
 
 > **Q: Bagaimana peminjaman untuk siswa?**
 >

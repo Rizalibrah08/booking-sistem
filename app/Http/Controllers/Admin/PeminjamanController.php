@@ -80,9 +80,9 @@ class PeminjamanController extends Controller
             $data['guarantor_id']  = null;
         }
 
-        // ── Hak Veto: Jika user adalah Kepsek ───────────────────────
+        // ── Hak Veto: Jika user adalah Kepsek atau Admin ───────────
         $user = Auth::user();
-        if ($user->isKepsek() && ! $data['is_student_borrower']) {
+        if (($user->isKepsek() || $user->isAdmin()) && ! $data['is_student_borrower']) {
             $data['status'] = Peminjaman::STATUS_APPROVED;
 
             $peminjaman = Peminjaman::create($data);
@@ -100,13 +100,13 @@ class PeminjamanController extends Controller
             foreach ($conflicts as $conflict) {
                 $conflict->update([
                     'status'        => Peminjaman::STATUS_CANCELED,
-                    'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Kepsek (Kepala Sekolah).',
+                    'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Admin / Kepala Sekolah.',
                 ]);
             }
 
             return redirect()
                 ->route('admin.peminjamans.show', $peminjaman)
-                ->with('success', 'Peminjaman langsung disetujui (Hak Veto Kepsek).');
+                ->with('success', 'Peminjaman langsung disetujui (Hak Veto Admin/Kepsek).');
         }
 
         // ── Simpan peminjaman sebagai pending ────────────────────────
