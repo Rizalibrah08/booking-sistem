@@ -195,36 +195,68 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B[User Login]
-    B --> C{Role?}
-    C -->|Admin/Kepsek| D[Admin Dashboard]
-    C -->|Guru/Staf| E[Guru Dashboard]
+    subgraph Pengguna
+        A([Mulai])
+        B[Melakukan Login]
+        F[Mengisi & Submit Form Peminjaman]
+        U[Melihat Detail Peminjaman]
+    end
 
-    D --> F[Isi Form Peminjaman]
+    subgraph Sistem
+        C{Validasi Role}
+        D[Tampilkan Dashboard Admin]
+        E[Tampilkan Dashboard Guru]
+        G[Validasi Input]
+        H{User = Kepsek/Admin?}
+        
+        I[Auto Approve + Terapan Hak Veto]
+        J[Tolak Otomatis Konflik Jadwal Lain]
+        
+        L[Simpan Sebagai Pending]
+        M{Ada Konflik Jadwal?}
+        
+        N[Auto Approve Peminjaman]
+        
+        O[Jalankan Algoritma SAW]
+        P[Hitung Normalisasi Matriks]
+        Q[Hitung Skor Akhir V_i]
+        R[Skor Tertinggi = Approved]
+        S[Skor Lainnya = Rejected]
+        
+        K[Simpan & Redirect ke Detail Peminjaman]
+        T([Selesai])
+    end
+
+    A --> B
+    B --> C
+    C -->|Admin/Kepsek| D
+    C -->|Guru/Staf| E
+    D --> F
     E --> F
-
-    F --> G[Validasi Input]
-    G -->|Gagal| F
-    G -->|Berhasil| H{User = Kepsek/Admin?}
-
-    H -->|Ya| I[Auto Approve + Hak Veto]
-    I --> J[Tolak Otomatis Konflik Lain]
-    J --> K[Simpan & Redirect ke Detail]
-
-    H -->|Tidak| L[Simpan sebagai Pending]
-    L --> M{Ada Konflik Jadwal?}
-
-    M -->|Tidak| N[Auto Approve]
+    
+    F --> G
+    G -->|Input Tidak Valid| F
+    G -->|Input Valid| H
+    
+    H -->|Ya| I
+    I --> J
+    J --> K
+    
+    H -->|Tidak| L
+    L --> M
+    
+    M -->|Tidak| N
     N --> K
-
-    M -->|Ya| O[Jalankan Algoritma SAW]
-    O --> P[Normalisasi Matriks]
-    P --> Q[Hitung Skor V_i]
-    Q --> R[Skor Tertinggi = Approved]
-    R --> S[Sisanya = Rejected]
+    
+    M -->|Ya| O
+    O --> P
+    P --> Q
+    Q --> R
+    R --> S
     S --> K
-
-    K --> T([End])
+    
+    K --> U
+    U --> T
 ```
 
 ### Class Diagram
