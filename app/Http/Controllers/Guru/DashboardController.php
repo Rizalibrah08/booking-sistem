@@ -40,16 +40,25 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Calendar Events (All approved and pending to see global availability)
+        // Calendar Events (All approved, pending, and rejected to see global availability and personal rejections)
         $allBookings = Peminjaman::with(['user', 'asset'])
-            ->whereIn('status', ['approved', 'pending'])
+            ->whereIn('status', ['approved', 'pending', 'rejected'])
             ->get();
 
         $calendarEvents = $allBookings->map(function ($booking) use ($userId) {
             $isMine = $booking->user_id === $userId;
+            
+            // Only show rejected tickets if it's the user's own ticket.
+            // Don't show other people's rejected tickets on the calendar.
+            if ($booking->status === 'rejected' && !$isMine) {
+                return null;
+            }
+
             $color = $isMine ? '#059669' : '#64748b'; // Emerald for mine, Slate for others
             if ($booking->status === 'pending') {
                 $color = '#d97706'; // Amber for pending
+            } elseif ($booking->status === 'rejected') {
+                $color = '#e11d48'; // Rose/Red for rejected
             }
             
             return [
@@ -59,7 +68,7 @@ class DashboardController extends Controller
                 'color' => $color,
                 'url'   => $isMine ? route('guru.peminjamans.show', $booking->id) : '#'
             ];
-        });
+        })->filter()->values();
 
         return view('guru.dashboard', compact('stats', 'upcomingPeminjamans', 'recentPeminjamans', 'calendarEvents'));
     }

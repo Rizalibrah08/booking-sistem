@@ -136,8 +136,8 @@ class SawCalculatorService
                 ->where('id', '!=', $vetoRequest->id)
                 ->each(function (Peminjaman $p) {
                     $p->update([
-                        'status'        => Peminjaman::STATUS_CANCELED,
-                        'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Admin / Kepala Sekolah.',
+                        'status'        => 'rejected',
+                        'cancel_reason' => 'Otomatis ditolak: Hak Veto Admin / Kepala Sekolah.',
                     ]);
                 });
 

@@ -54,8 +54,8 @@
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Akses Cepat & Statistik</h3>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-            <a href="{{ route('admin.assets.index') }}" class="quick-access-card bg-brand-600 group" style="animation-delay: 50ms">
+        <div class="flex flex-col md:flex-row gap-4 lg:gap-6">
+            <a href="{{ route('admin.assets.index') }}" class="quick-access-card bg-brand-600 group flex-1" style="animation-delay: 50ms">
                 <div>
                     <div class="icon-wrapper">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
@@ -71,7 +71,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('admin.peminjamans.index') }}" class="quick-access-card bg-amber-500 group" style="animation-delay: 100ms">
+            <a href="{{ route('admin.peminjamans.index') }}" class="quick-access-card bg-amber-500 group flex-1" style="animation-delay: 100ms">
                 <div>
                     <div class="icon-wrapper">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -86,6 +86,24 @@
                     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </a>
+
+            @if($stats['rejected'] > 0)
+            <a href="{{ route('admin.peminjamans.index') }}" class="quick-access-card bg-rose-600 group flex-1" style="animation-delay: 150ms">
+                <div>
+                    <div class="icon-wrapper">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-1 leading-tight">Tiket<br>Ditolak</h4>
+                </div>
+                <div class="flex items-center gap-2 mt-4 text-rose-100 text-xs font-medium group-hover:text-white transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Ada {{ $stats['rejected'] }} tiket yang tertolak sistem
+                </div>
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 text-rose-700 opacity-20 transform rotate-12 group-hover:scale-110 transition-transform duration-500">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+            </a>
+            @endif
         </div>
     </div>
 
@@ -93,9 +111,10 @@
     <div class="card animate-fade-in-up" style="animation-delay:150ms">
         <div class="card-header flex justify-between items-center">
             <h3 class="text-sm font-bold text-slate-800">🗓️ Kalender Peminjaman</h3>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Disetujui</span>
                 <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-amber-600"></span> Pending</span>
+                <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-rose-600"></span> Ditolak</span>
             </div>
         </div>
         <div class="card-body">

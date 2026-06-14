@@ -30,7 +30,7 @@
                 </div>
             </div>
             
-            <div class="hidden md:flex flex-shrink-0 w-48 h-48 bg-white/10 backdrop-blur-sm rounded-3xl items-center justify-center border border-white/20 p-6 transform rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl">
+            <div class="hidden md:flex flex-shrink-0 w-48 h-48 bg-white/10 backdrop-blur-sm rounded-3xl items-center justify-center border border-white/20 p-6 transform hover:rotate-3 transition-transform duration-500 shadow-2xl">
                 <img src="{{ asset('image/logo/Logo SMP Transparan.png') }}" alt="Logo Instansi" class="w-full h-full object-contain drop-shadow-lg filter brightness-110">
             </div>
         </div>
@@ -43,8 +43,8 @@
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Akses Cepat & Statistik</h3>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            <a href="{{ route('guru.peminjamans.index') }}" class="quick-access-card bg-brand-600 group" style="animation-delay: 50ms">
+        <div class="flex flex-col md:flex-row gap-4 lg:gap-6">
+            <a href="{{ route('guru.peminjamans.index') }}" class="quick-access-card bg-brand-600 group flex-1" style="animation-delay: 50ms">
                 <div>
                     <div class="icon-wrapper">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
@@ -60,53 +60,23 @@
                 </div>
             </a>
 
-            <div class="quick-access-card bg-amber-500 group" style="animation-delay: 100ms">
+            @if($stats['rejected'] > 0)
+            <a href="{{ route('guru.peminjamans.index') }}" class="quick-access-card bg-rose-600 group flex-1" style="animation-delay: 100ms">
                 <div>
                     <div class="icon-wrapper">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <h4 class="text-xl font-bold mb-1 leading-tight">Status<br>Pending</h4>
+                    <h4 class="text-xl font-bold mb-1 leading-tight">Tiket<br>Ditolak</h4>
                 </div>
-                <div class="flex items-center gap-2 mt-4 text-amber-100 text-xs font-medium">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    {{ $stats['pending'] }} Menunggu Diproses
+                <div class="flex items-center gap-2 mt-4 text-rose-100 text-xs font-medium group-hover:text-white transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Ada {{ $stats['rejected'] }} tiket yang tertolak (Kalah SAW)
                 </div>
-                <div class="absolute -bottom-6 -right-6 w-32 h-32 text-amber-600 opacity-20 transform rotate-12 group-hover:scale-110 transition-transform duration-500">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 text-rose-700 opacity-20 transform rotate-12 group-hover:scale-110 transition-transform duration-500">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-            </div>
-
-            <div class="quick-access-card bg-emerald-600 group" style="animation-delay: 150ms">
-                <div>
-                    <div class="icon-wrapper">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <h4 class="text-xl font-bold mb-1 leading-tight">Tiket<br>Disetujui</h4>
-                </div>
-                <div class="flex items-center gap-2 mt-4 text-emerald-100 text-xs font-medium">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    {{ $stats['approved'] }} Tiket Diterima
-                </div>
-                <div class="absolute -bottom-6 -right-6 w-32 h-32 text-emerald-700 opacity-20 transform -rotate-6 group-hover:scale-110 transition-transform duration-500">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-            </div>
-
-            <div class="quick-access-card bg-slate-700 group" style="animation-delay: 200ms">
-                <div>
-                    <div class="icon-wrapper">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h4 class="text-xl font-bold mb-1 leading-tight">Jadwal<br>Hari Ini</h4>
-                </div>
-                <div class="flex items-center gap-2 mt-4 text-slate-300 text-xs font-medium">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    {{ $stats['hari_ini'] }} Booking Aktif
-                </div>
-                <div class="absolute -bottom-6 -right-6 w-32 h-32 text-slate-800 opacity-30 transform rotate-6 group-hover:scale-110 transition-transform duration-500">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-            </div>
+            </a>
+            @endif
         </div>
     </div>
 
@@ -114,10 +84,11 @@
     <div class="card animate-fade-in-up" style="animation-delay:250ms">
         <div class="card-header flex justify-between items-center">
             <h3 class="text-sm font-bold text-slate-800">🗓️ Kalender Ketersediaan Fasilitas</h3>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Jadwal Anda</span>
                 <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-slate-500"></span> Jadwal Orang Lain</span>
                 <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-amber-600"></span> Pending</span>
+                <span class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold"><span class="w-2 h-2 rounded-full bg-rose-600"></span> Ditolak (Anda)</span>
             </div>
         </div>
         <div class="card-body">

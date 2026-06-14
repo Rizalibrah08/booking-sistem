@@ -10,6 +10,7 @@ use App\Services\SawCalculatorService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
@@ -74,15 +75,20 @@ class PeminjamanController extends Controller
 
             $peminjaman->refresh();
 
-            if ($peminjaman->status === Peminjaman::STATUS_CANCELED) {
+            if ($peminjaman->status === Peminjaman::STATUS_REJECTED) {
+                if (str_contains($peminjaman->cancel_reason, 'Hak Veto')) {
+                    return redirect()
+                        ->route('guru.peminjamans.show', $peminjaman)
+                        ->with('error', 'Peminjaman otomatis ditolak karena jadwal bentrok dengan agenda Kepala Sekolah/Admin (Hak Veto).');
+                }
                 return redirect()
                     ->route('guru.peminjamans.show', $peminjaman)
-                    ->with('error', 'Peminjaman otomatis dibatalkan karena jadwal bentrok dengan agenda Kepala Sekolah/Admin (Hak Veto).');
+                    ->with('error', "Terdeteksi konflik jadwal. Peminjaman Anda ditolak karena kalah prioritas (SAW). Skor Anda: {$peminjaman->saw_final_score}");
             }
 
             return redirect()
                 ->route('guru.peminjamans.show', $peminjaman)
-                ->with('info', "Terdeteksi konflik jadwal. SAW telah menentukan prioritas. Skor Anda: {$peminjaman->saw_final_score}");
+                ->with('info', "Terdeteksi konflik jadwal. Peminjaman Anda disetujui karena menang prioritas (SAW). Skor Anda: {$peminjaman->saw_final_score}");
         }
 
         // Tidak ada konflik
@@ -106,5 +112,35 @@ class PeminjamanController extends Controller
         $peminjaman->load(['asset', 'guarantor']);
 
         return view('guru.peminjamans.show', compact('peminjaman'));
+    }
+
+    /**
+     * Batalkan peminjaman milik sendiri.
+     */
+    public function cancel(Request $request, Peminjaman $peminjaman): RedirectResponse
+    {
+        // Pastikan hanya bisa cancel milik sendiri
+        if ($peminjaman->user_id !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses ke peminjaman ini.');
+        }
+
+        if (!in_array($peminjaman->status, [Peminjaman::STATUS_PENDING, Peminjaman::STATUS_APPROVED])) {
+            return back()->with('error', 'Status peminjaman saat ini tidak dapat dibatalkan.');
+        }
+
+        $request->validate([
+            'cancel_reason' => ['required', 'string', 'max:500'],
+        ], [
+            'cancel_reason.required' => 'Alasan pembatalan wajib diisi.',
+        ]);
+
+        $peminjaman->update([
+            'status'        => Peminjaman::STATUS_CANCELED,
+            'cancel_reason' => 'Dibatalkan oleh peminjam: ' . $request->input('cancel_reason'),
+        ]);
+
+        return redirect()
+            ->route('guru.peminjamans.show', $peminjaman)
+            ->with('success', 'Peminjaman berhasil dibatalkan.');
     }
 }

@@ -77,4 +77,7 @@ Route::middleware(['auth', 'role:guru,staf'])
 
         Route::get('/peminjamans/{peminjaman}', [GuruPeminjamanController::class, 'show'])
             ->name('peminjamans.show');
+
+        Route::put('/peminjamans/{peminjaman}/cancel', [GuruPeminjamanController::class, 'cancel'])
+            ->name('peminjamans.cancel');
     });

@@ -99,8 +99,8 @@ class PeminjamanController extends Controller
 
             foreach ($conflicts as $conflict) {
                 $conflict->update([
-                    'status'        => Peminjaman::STATUS_CANCELED,
-                    'cancel_reason' => 'Otomatis dibatalkan: Hak Veto Admin / Kepala Sekolah.',
+                    'status'        => 'rejected',
+                    'cancel_reason' => 'Otomatis ditolak: Hak Veto Admin / Kepala Sekolah.',
                 ]);
             }
 
@@ -132,9 +132,20 @@ class PeminjamanController extends Controller
             // Refresh data
             $peminjaman->refresh();
 
+            if ($peminjaman->status === 'rejected') {
+                if (str_contains($peminjaman->cancel_reason, 'Hak Veto')) {
+                    return redirect()
+                        ->route('admin.peminjamans.show', $peminjaman)
+                        ->with('error', 'Peminjaman untuk siswa otomatis ditolak karena jadwal bentrok dengan agenda Kepala Sekolah/Admin (Hak Veto).');
+                }
+                return redirect()
+                    ->route('admin.peminjamans.show', $peminjaman)
+                    ->with('error', "Terdeteksi {$conflictCount} konflik jadwal. Peminjaman siswa ditolak karena kalah prioritas (SAW). Skor: {$peminjaman->saw_final_score}");
+            }
+
             return redirect()
                 ->route('admin.peminjamans.show', $peminjaman)
-                ->with('info', "Terdeteksi {$conflictCount} konflik jadwal. SAW telah menentukan prioritas. Skor: {$peminjaman->saw_final_score}");
+                ->with('info', "Terdeteksi {$conflictCount} konflik jadwal. Peminjaman siswa disetujui karena menang prioritas (SAW). Skor: {$peminjaman->saw_final_score}");
         }
 
         // Tidak ada konflik — auto approve

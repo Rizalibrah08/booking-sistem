@@ -26,8 +26,8 @@ class UserSeeder extends Seeder
                 'jabatan_score'  => 4,
             ],
             [
-                'name'           => 'Budi Santoso',
-                'email'          => 'budi@mbs.sch.id',
+                'name'           => 'Muhammad Rizal Ibrahim',
+                'email'          => 'rizal@mbs.sch.id',
                 'password'       => Hash::make('password'),
                 'role'           => 'guru',
                 'jabatan_score'  => 3,
@@ -40,8 +40,8 @@ class UserSeeder extends Seeder
                 'jabatan_score'  => 3,
             ],
             [
-                'name'           => 'Ahmad Dahlan',
-                'email'          => 'ahmad@mbs.sch.id',
+                'name'           => 'Arief Mahmudi',
+                'email'          => 'arief@mbs.sch.id',
                 'password'       => Hash::make('password'),
                 'role'           => 'guru',
                 'jabatan_score'  => 3,

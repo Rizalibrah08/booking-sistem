@@ -70,7 +70,7 @@ Ketika dua atau lebih pengguna meminjam fasilitas yang sama pada waktu yang bert
 | **Multi-Role** | 4 role: Admin, Kepsek, Guru, Staf — masing-masing dengan dashboard terpisah |
 | **Deteksi Konflik** | Otomatis mendeteksi jadwal bertumpuk dan menjalankan SAW |
 | **Ticket System** | Setiap peminjaman diberi ID tiket (#TKT-0001) untuk tracking mudah |
-| **Force Cancel** | Admin dapat membatalkan peminjaman yang sudah disetujui |
+| **Pembatalan Tiket** | Admin dapat membatalkan peminjaman (Force Cancel), Guru/Staf dapat membatalkan peminjamannya sendiri |
 
 ---
 
@@ -147,7 +147,7 @@ graph TB
         UC4["Ajukan Peminjaman"]
         UC5["Lihat Riwayat Tiket"]
         UC6["Lihat Detail & Skor SAW"]
-        UC7["Force Cancel Peminjaman"]
+        UC7["Batalkan Peminjaman"]
         UC8["Input Peminjaman Siswa"]
         UC9["Hak Veto Otomatis"]
         UC10["Hitung SAW & Resolve Konflik"]
@@ -179,12 +179,14 @@ graph TB
     Guru --> UC4
     Guru --> UC5
     Guru --> UC6
+    Guru --> UC7
 
     Staf --> UC1
     Staf --> UC2
     Staf --> UC4
     Staf --> UC5
     Staf --> UC6
+    Staf --> UC7
 
     UC4 -->|"include"| UC10
 ```
@@ -206,7 +208,7 @@ flowchart TD
     G -->|Berhasil| H{User = Kepsek/Admin?}
 
     H -->|Ya| I[Auto Approve + Hak Veto]
-    I --> J[Force Cancel Konflik Lain]
+    I --> J[Tolak Otomatis Konflik Lain]
     J --> K[Simpan & Redirect ke Detail]
 
     H -->|Tidak| L[Simpan sebagai Pending]
@@ -424,6 +426,7 @@ mbs-booking/
 | GET | `/peminjamans/create` | Guru\PeminjamanController@create | auth, role:guru,staf |
 | POST | `/peminjamans` | Guru\PeminjamanController@store | auth, role:guru,staf |
 | GET | `/peminjamans/{id}` | Guru\PeminjamanController@show | auth, role:guru,staf |
+| PUT | `/peminjamans/{id}/cancel` | Guru\PeminjamanController@cancel | auth, role:guru,staf |
 
 ---
 
@@ -471,9 +474,9 @@ php artisan serve
 |------|-------|----------|
 | Admin | `admin@mbs.sch.id` | password |
 | Kepsek | `kepsek@mbs.sch.id` | password |
-| Guru | `budi@mbs.sch.id` | password |
+| Guru | `rizal@mbs.sch.id` | password |
 | Guru | `siti@mbs.sch.id` | password |
-| Guru | `ahmad@mbs.sch.id` | password |
+| Guru | `arief@mbs.sch.id` | password |
 | Staf | `dewi@mbs.sch.id` | password |
 | Staf | `rian@mbs.sch.id` | password |
 
@@ -503,7 +506,7 @@ php artisan serve
 
 > **Q: Apa itu Hak Veto?**
 >
-> **A:** Jika Kepala Sekolah atau Admin mengajukan peminjaman (bukan atas nama siswa), permintaan langsung disetujui dan semua konflik otomatis dibatalkan tanpa melalui SAW.
+> **A:** Jika Kepala Sekolah atau Admin mengajukan peminjaman (bukan atas nama siswa), permintaan langsung disetujui dan semua jadwal yang bertumpuk otomatis ditolak (rejected) tanpa melalui SAW.
 
 > **Q: Bagaimana peminjaman untuk siswa?**
 >

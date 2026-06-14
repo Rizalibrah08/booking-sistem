@@ -41,13 +41,18 @@ class DashboardController extends Controller
             ->orderBy('jam_mulai')
             ->get();
 
-        // Calendar Events (All approved and pending)
+        // Calendar Events (All approved, pending, and rejected)
         $allBookings = Peminjaman::with(['user', 'asset'])
-            ->whereIn('status', ['approved', 'pending'])
+            ->whereIn('status', ['approved', 'pending', 'rejected'])
             ->get();
 
         $calendarEvents = $allBookings->map(function ($booking) {
-            $color = $booking->status === 'approved' ? '#059669' : '#d97706'; // emerald-600 or amber-600
+            $color = '#059669'; // emerald-600
+            if ($booking->status === 'pending') {
+                $color = '#d97706'; // amber-600
+            } elseif ($booking->status === 'rejected') {
+                $color = '#e11d48'; // rose-600
+            }
             
             return [
                 'title' => $booking->asset->nama_aset . ' (' . $booking->user->name . ')',
