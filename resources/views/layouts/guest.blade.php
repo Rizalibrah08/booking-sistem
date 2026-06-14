@@ -8,7 +8,7 @@
     <meta name="description" content="Sistem Pendukung Keputusan Peminjaman Fasilitas MBS A.R. Fachruddin">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-gradient-to-br from-brand-950 via-slate-900 to-brand-900 flex items-center justify-center p-4">
+<body class="min-h-screen bg-white text-slate-900 antialiased">
     @yield('content')
 </body>
 </html>

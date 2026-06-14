@@ -40,6 +40,27 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('guru.dashboard', compact('stats', 'upcomingPeminjamans', 'recentPeminjamans'));
+        // Calendar Events (All approved and pending to see global availability)
+        $allBookings = Peminjaman::with(['user', 'asset'])
+            ->whereIn('status', ['approved', 'pending'])
+            ->get();
+
+        $calendarEvents = $allBookings->map(function ($booking) use ($userId) {
+            $isMine = $booking->user_id === $userId;
+            $color = $isMine ? '#059669' : '#64748b'; // Emerald for mine, Slate for others
+            if ($booking->status === 'pending') {
+                $color = '#d97706'; // Amber for pending
+            }
+            
+            return [
+                'title' => $booking->asset->nama_aset . ($isMine ? ' (Anda)' : ' (' . $booking->user->name . ')'),
+                'start' => $booking->tgl_pakai->format('Y-m-d') . 'T' . $booking->jam_mulai,
+                'end'   => $booking->tgl_pakai->format('Y-m-d') . 'T' . $booking->jam_selesai,
+                'color' => $color,
+                'url'   => $isMine ? route('guru.peminjamans.show', $booking->id) : '#'
+            ];
+        });
+
+        return view('guru.dashboard', compact('stats', 'upcomingPeminjamans', 'recentPeminjamans', 'calendarEvents'));
     }
 }

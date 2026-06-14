@@ -41,6 +41,23 @@ class DashboardController extends Controller
             ->orderBy('jam_mulai')
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentPeminjamans', 'todayPeminjamans'));
+        // Calendar Events (All approved and pending)
+        $allBookings = Peminjaman::with(['user', 'asset'])
+            ->whereIn('status', ['approved', 'pending'])
+            ->get();
+
+        $calendarEvents = $allBookings->map(function ($booking) {
+            $color = $booking->status === 'approved' ? '#059669' : '#d97706'; // emerald-600 or amber-600
+            
+            return [
+                'title' => $booking->asset->nama_aset . ' (' . $booking->user->name . ')',
+                'start' => $booking->tgl_pakai->format('Y-m-d') . 'T' . $booking->jam_mulai,
+                'end'   => $booking->tgl_pakai->format('Y-m-d') . 'T' . $booking->jam_selesai,
+                'color' => $color,
+                'url'   => route('admin.peminjamans.show', $booking->id)
+            ];
+        });
+
+        return view('admin.dashboard', compact('stats', 'recentPeminjamans', 'todayPeminjamans', 'calendarEvents'));
     }
 }

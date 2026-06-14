@@ -11,14 +11,12 @@
     <div class="flex min-h-screen">
 
         {{-- ═══ SIDEBAR ═══ --}}
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-60 bg-gradient-to-b from-slate-800 via-slate-850 to-slate-900 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
-            <div class="px-5 py-5 flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/25">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                </div>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-60 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+            <div class="px-5 py-5 flex items-center gap-3 border-b border-slate-100">
+                <img src="{{ asset('image/logo/Logo SMP Transparan.png') }}" alt="Logo" class="w-9 h-9 object-contain drop-shadow-sm">
                 <div class="min-w-0">
-                    <h1 class="text-white font-bold text-sm leading-tight truncate">MBS Fachruddin</h1>
-                    <p class="text-emerald-400/70 text-[10px] font-medium tracking-wide uppercase">Portal {{ ucfirst(Auth::user()->role) }}</p>
+                    <h1 class="text-brand-900 font-extrabold text-sm leading-tight truncate">MBS Fachruddin</h1>
+                    <p class="text-brand-600 text-[10px] font-bold tracking-wide uppercase">Portal {{ ucfirst(Auth::user()->role) }}</p>
                 </div>
             </div>
 
@@ -40,18 +38,18 @@
                 </a>
             </nav>
 
-            <div class="px-4 py-3 border-t border-white/[0.06]">
+            <div class="px-4 py-3 border-t border-slate-200">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow">
+                    <div class="w-8 h-8 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center font-bold text-xs">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-xs font-semibold text-white truncate">{{ Auth::user()->name }}</p>
-                        <p class="text-[10px] text-slate-400 capitalize">{{ Auth::user()->role }}</p>
+                        <p class="text-xs font-bold text-slate-800 truncate">{{ Auth::user()->name }}</p>
+                        <p class="text-[10px] text-slate-500 capitalize font-medium">{{ Auth::user()->role }}</p>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-white/5 transition-all" title="Logout">
+                        <button type="submit" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all" title="Logout">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>
                         </button>
                     </form>
